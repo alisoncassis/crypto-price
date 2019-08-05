@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+ 
+<html>
+ 
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="author" content="Juliano">
+    <meta name="description" content="Website para cotação de criptomoedas">
+    <title>Cotação de Criptomoedas</title>
+    <style>
+    .container {
+        background-color: tomato;
+        color: white;
+        margin: 50px;
+        padding: 50px;
+    }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function(){
+          $("button#search").click(function(){ //evento de click -- document - id do botao - ready clicky
+            // $("BTC").hide();
+            $.ajax({
+                type: "GET",
+                url: "https://digital-coin-reports.netlify.com/.netlify/functions",       
+                dataType: "json",
+                sucess: function(data){
+                //    $.each(data,function(index,item){
+                   //     $.each(item, function(key, value){
+                    //        container.append(key + ':' + value + '</br>');
+          //  });
+           // container.append('<br/></br>');
+        
+           // .done(function( data ) {
+             //   console.log(data);
+                 //alert(retorno.BTC[0].high)
+              //      });
+                }
+            });
+          }
+        );
+        })
+    </script>
+</head>
+ 
+<body>
+    <div class="container">
+        <header>
+           <h1 style='font-size:60px;color:blue'>Cotações</h1>
+        </header>
+            <input type="checkbox" name="BTC" id="BTC" value="BTC"> Bitcoin<br>
+            <input type="checkbox" name="LTC" id="LTC" value="LTC"> LTC<br>
+            <input type="checkbox" name="BCH" id="BCH" value="BCH"> BCH<br>
+            <input type="checkbox" name="XRP" id="XRP" value="XRP"> XRP<br>
+            <input type="checkbox" name="ETH" id="ETH" value="ETH"> ETH<br>
+       
+            <button id="search">Verificar cotação</button>
+      </div>
+     
+</body>
+
+</html>
+        
