@@ -14,6 +14,10 @@
         margin: 50px;
         padding: 50px;
     }
+    main{
+        padding:100px 2%;
+        color: white;
+    }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -35,17 +39,27 @@
     </div>
 
     <script>
-        $("#search").click(function(){ 
+        $('#search').click(function(){ 
+            getCoinsJson();
+        })    
+
+        function getCoinsJson(){
           $.ajax({
-              type: "GET",
-              url: "https://digital-coin-reports.netlify.com/.netlify/functions/daily-report",
-              dataType: "json",
-                sucess: function(data){
-                   console.log($)
-               }
-           });
-        })
-            
+              method: 'GET',
+              url: 'https://digital-coin-reports.netlify.com/.netlify/functions/daily-report',
+              dataType: 'json',
+              sucess: onSucess,
+              error: onError
+           })
+        }
+
+        function onSucess(jsonReturn){
+            alert($('coins').toArray());
+        }
+
+        function onError(){
+            $('#main').html('I failed.');
+        }
     </script>
      
 </body>
