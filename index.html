@@ -42,21 +42,25 @@
         $('#search').click(function(){ 
             getCoinsJson();
         })    
-
         function getCoinsJson(){
+            var coins = ['BTC', 'LTC', 'ETH'];
+            var filter = '';
+             for (let x = 0; x < coins.length; x++) {
+                const coin = coins[x];     
+            filter += 'coins' + '[' + x + ']' + '=' + coin  + '&' ;      
+            }
+            
           $.ajax({
               method: 'GET',
-              url: 'https://digital-coin-reports.netlify.com/.netlify/functions/daily-report',
+              url: 'https://digital-coin-reports.netlify.com/.netlify/functions/daily-report?' + filter,
               dataType: 'json',
-              sucess: onSucess,
+              success: onSucess,
               error: onError
            })
         }
-
         function onSucess(jsonReturn){
             alert($('coins').toArray());
         }
-
         function onError(){
             $('#main').html('I failed.');
         }
