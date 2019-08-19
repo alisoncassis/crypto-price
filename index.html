@@ -35,21 +35,26 @@
             <input type="checkbox" name="coins" id="XRP" value="XRP"> XRP<br>
             <input type="checkbox" name="coins" id="ETH" value="ETH"> ETH<br>
        
-            <button id="search">Verificar cotação</button>
+            <button id="search">Pesquisar</button>
     </div>
+    <div id='log'>teste</div>
 
     <script>
-        $('#search').click(function(){ 
-            getCoinsJson();
-        })    
+        $('#search').click(function(){
+            getCoinsJson()
+        })
+           
         function getCoinsJson(){
-            var coins = ['BTC', 'LTC', 'ETH'];
-            var filter = '';
-             for (let x = 0; x < coins.length; x++) {
-                const coin = coins[x];     
-            filter += 'coins' + '[' + x + ']' + '=' + coin  + '&' ;      
-            }
-            
+                var array = []
+                $('input:checkbox[name=coins]:checked').each(function(){
+                    array.push($(this).val())
+                })
+                var filter = ''
+                for (let x = 0; x < array.length; x++) {
+                   const coin = array[x];     
+                filter += 'coins' + '[' + x + ']' + '=' + coin  + '&' ; 
+               }      
+                    
           $.ajax({
               method: 'GET',
               url: 'https://digital-coin-reports.netlify.com/.netlify/functions/daily-report?' + filter,
@@ -58,8 +63,9 @@
               error: onError
            })
         }
+        
         function onSucess(jsonReturn){
-            alert($('coins').toArray());
+            //alert($('coins').toArray());
         }
         function onError(){
             $('#main').html('I failed.');
@@ -69,4 +75,3 @@
 </body>
 
 </html>
-        
