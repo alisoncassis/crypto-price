@@ -18,6 +18,19 @@
         padding:100px 2%;
         color: white;
     }
+    table {
+        font-family: arial, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+    td, th {
+        border: 1px solid #dddddd;
+        text-align: left;
+        padding: 8px;
+    }
+    tr:nth-child(even) {
+        background-color: #dddddd;
+    }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -34,10 +47,37 @@
             <input type="checkbox" name="coins" id="BCH" value="BCH"> BCH<br>
             <input type="checkbox" name="coins" id="XRP" value="XRP"> XRP<br>
             <input type="checkbox" name="coins" id="ETH" value="ETH"> ETH<br>
-       
+            <br></br>
             <button id="search">Pesquisar</button>
     </div>
-    <div id='log'>teste</div>
+
+    <table>
+        <tr>
+          <th>Cryptocurrency</th>
+          <th>High</th>
+          <th>Low</th>
+          <th>Volume</th>
+          <th>Last</th>
+          <th>Buy</th>
+          <th>Sell</th>
+          <th>Date</th>
+        </tr>
+        <tr>
+          <td>BTC</td>
+          <td>44000</td>
+          <td>41601</td>
+          <td>363.46066830</td>
+          <td>43980</td>
+          <td>43980</td>
+          <td>43999</td>
+          <td>1566245644</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>/td>
+          <td></td>
+        </tr>
+      </table>
 
     <script>
         $('#search').click(function(){
