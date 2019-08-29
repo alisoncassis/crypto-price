@@ -1,1 +1,1 @@
-Cryptocurrency API
+Cryptocurrency front calling api

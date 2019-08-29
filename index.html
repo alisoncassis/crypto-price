@@ -1,117 +1,149 @@
 <!DOCTYPE html>
- 
+
 <html>
- 
+
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="author" content="Juliano">
     <meta name="description" content="Website para cotação de criptomoedas">
     <title>Cotação de Criptomoedas</title>
     <style>
-    .container {
-        background-color: tomato;
-        color: white;
-        margin: 50px;
-        padding: 50px;
-    }
-    main{
-        padding:100px 2%;
-        color: white;
-    }
-    table {
-        font-family: arial, sans-serif;
-        border-collapse: collapse;
-        width: 100%;
-    }
-    td, th {
-        border: 1px solid #dddddd;
-        text-align: left;
-        padding: 8px;
-    }
-    tr:nth-child(even) {
-        background-color: #dddddd;
-    }
+        .container {
+            background-color: tomato;
+            color: white;
+            margin: 50px;
+            padding: 50px;
+        }
+
+        main {
+            padding: 100px 2%;
+            color: white;
+        }
+
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        td,
+        th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
     </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
- 
+
 </head>
- 
+
 <body>
     <div class="container">
         <header>
-           <h1 style='font-size:60px;color:blue'>Cotações</h1>
+            <h1 style='font-size:60px;color:blue'>Cotações</h1>
         </header>
-            <input type="checkbox" name="coins" id="BTC" value="BTC"> Bitcoin<br>
-            <input type="checkbox" name="coins" id="LTC" value="LTC"> LTC<br>
-            <input type="checkbox" name="coins" id="BCH" value="BCH"> BCH<br>
-            <input type="checkbox" name="coins" id="XRP" value="XRP"> XRP<br>
-            <input type="checkbox" name="coins" id="ETH" value="ETH"> ETH<br>
-            <br></br>
-            <button id="search">Pesquisar</button>
+        <input type="checkbox" name="coins" id="BTC" value="BTC"> Bitcoin
+        <br>
+        <input type="checkbox" name="coins" id="LTC" value="LTC"> LTC
+        <br>
+        <input type="checkbox" name="coins" id="BCH" value="BCH"> BCH
+        <br>
+        <input type="checkbox" name="coins" id="XRP" value="XRP"> XRP
+        <br>
+        <input type="checkbox" name="coins" id="ETH" value="ETH"> ETH
+        <br>
+        <br></br>
+        <button id="search">Pesquisar</button>
     </div>
 
     <table>
-        <tr>
-          <th>Cryptocurrency</th>
-          <th>High</th>
-          <th>Low</th>
-          <th>Volume</th>
-          <th>Last</th>
-          <th>Buy</th>
-          <th>Sell</th>
-          <th>Date</th>
-        </tr>
-        <tr>
-          <td>BTC</td>
-          <td>44000</td>
-          <td>41601</td>
-          <td>363.46066830</td>
-          <td>43980</td>
-          <td>43980</td>
-          <td>43999</td>
-          <td>1566245644</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>/td>
-          <td></td>
-        </tr>
-      </table>
+        <thead>
+            <tr>
+                <th>Cryptocurrency</th>
+                <th>High</th>
+                <th>Low</th>
+                <th>Volume</th>
+                <th>Last</th>
+                <th>Buy</th>
+                <th>Sell</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
 
     <script>
-        $('#search').click(function(){
+        $('#search').click(function () {
             getCoinsJson()
         })
-           
-        function getCoinsJson(){
-                var array = []
-                $('input:checkbox[name=coins]:checked').each(function(){
-                    array.push($(this).val())
-                })
-                var filter = ''
-                for (let x = 0; x < array.length; x++) {
-                   const coin = array[x];     
-                filter += 'coins' + '[' + x + ']' + '=' + coin  + '&' ; 
-               }      
-                    
-          $.ajax({
-              method: 'GET',
-              url: 'https://digital-coin-reports.netlify.com/.netlify/functions/daily-report?' + filter,
-              dataType: 'json',
-              success: onSucess,
-              error: onError
-           })
+
+        function getCoinsJson() {
+            $('#table-body').empty()
+            var array = []
+            $('input:checkbox[name=coins]:checked').each(function () {
+                array.push($(this).val())
+            })
+            if (array.length === 0) {
+                return alert('selecione ao menos 1 moeda')
+            }
+            var filter = ''
+            for (let x = 0; x < array.length; x++) {
+                const coin = array[x];
+                filter += 'coins' + '[' + x + ']' + '=' + coin + '&';
+            }
+
+            $.ajax({
+                method: 'GET',
+                url: 'https://digital-coin-reports.netlify.com/.netlify/functions/daily-report?' + filter,
+                dataType: 'json',
+                success: onSucess,
+                error: onError
+            })
         }
-        
-        function onSucess(jsonReturn){
+
+        function onSucess(data) {
+            Object.keys(data).forEach(key => {
+                $('#table-body').append(`
+                    <tr>
+                        <td>
+                            ${key}
+                        </td>
+                        <td>
+                            ${data[key].high}
+                        </td>
+                        <td>
+                            ${data[key].low}
+                        </td>
+                        <td>
+                            ${data[key].vol}
+                        </td>
+                        <td>
+                            ${data[key].last}
+                        </td>
+                        <td>
+                            ${data[key].buy}
+                        </td>
+                        <td>
+                            ${data[key].sell}
+                        </td>
+                        <td>
+                            ${data[key].date}
+                        </td>
+                    </tr>
+                `)
+            })
             //alert($('coins').toArray());
         }
-        function onError(){
-            $('#main').html('I failed.');
+        function onError(error) {
+            console.log(error)
         }
     </script>
-     
+
 </body>
 
 </html>
